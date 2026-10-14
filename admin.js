@@ -1,39 +1,58 @@
 
-function addCollegeEvent(name, date, venue, description) {
-    if (!name.trim() || !date || !venue.trim()) {
-        alert("Please enter the event name, date, and venue.");
+const eventForm = document.getElementById("event-form");
+const adminMessage = document.getElementById("admin-message");
+
+eventForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const name = document.getElementById("event-name").value.trim();
+    const date = document.getElementById("event-date").value;
+    const venue = document.getElementById("event-venue").value.trim();
+    const description =
+        document.getElementById("event-description").value.trim();
+
+    if (!name || !date || !venue) {
+        adminMessage.textContent =
+            "Please fill in the event name, date, and venue.";
         return;
     }
 
-    const events = window.collegeEvents || [];
-
-    const newEvent = {
+    window.collegeEvents.push({
         id: Date.now(),
-        name: name.trim(),
+        name,
         date,
-        venue: venue.trim(),
-        description: description.trim()
-    };
+        venue,
+        description
+    });
 
-    events.push(newEvent);
-    window.collegeEvents = events;
+    window.displayEvents();
+    eventForm.reset();
 
-    alert("Event added successfully: " + newEvent.name);
+    adminMessage.textContent = "Event added successfully!";
+});
 
-    if (typeof displayEvents === "function") {
-        displayEvents();
-    }
-}
+document.addEventListener("click", function (event) {
+    const button = event.target.closest(".delete-event-btn");
 
-function deleteCollegeEvent(eventId) {
-    const events = window.collegeEvents || [];
-    window.collegeEvents = events.filter(
-        event => String(event.id) !== String(eventId)
+    if (!button) return;
+
+    const eventId = button.dataset.eventId;
+    const eventToDelete = window.collegeEvents.find(
+        item => String(item.id) === eventId
     );
 
-    if (typeof displayEvents === "function") {
-        displayEvents();
-    }
+    if (!eventToDelete) return;
 
-    alert("Event deleted successfully.");
-}
+    const confirmed = confirm(
+        `Delete "${eventToDelete.name}"?`
+    );
+
+    if (!confirmed) return;
+
+    window.collegeEvents = window.collegeEvents.filter(
+        item => String(item.id) !== eventId
+    );
+
+    window.displayEvents();
+    adminMessage.textContent = "Event deleted successfully!";
+});

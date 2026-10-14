@@ -1,5 +1,5 @@
 
-const collegeEvents = [
+window.collegeEvents = [
     {
         id: 1,
         name: "Coding Competition",
@@ -23,22 +23,37 @@ const collegeEvents = [
     }
 ];
 
-window.collegeEvents = collegeEvents;
-
-function displayEvents() {
+window.displayEvents = function () {
     const container = document.getElementById("events");
 
-    container.innerHTML = collegeEvents.map(event => `
+    container.innerHTML = window.collegeEvents.map(event => `
         <article class="event-card">
-            <h3>${event.name}</h3>
-            <p>${event.description}</p>
-            <p><strong>Date:</strong> ${event.date}</p>
-            <p><strong>Venue:</strong> ${event.venue}</p>
-            <button class="register-btn" data-event-id="${event.id}">
+            <h3>${escapeHTML(event.name)}</h3>
+            <p>${escapeHTML(event.description || "")}</p>
+            <p><strong>Date:</strong> ${escapeHTML(event.date)}</p>
+            <p><strong>Venue:</strong> ${escapeHTML(event.venue)}</p>
+
+            <button class="register-btn"
+                    data-event-id="${event.id}">
                 Register
+            </button>
+
+            <button class="delete-event-btn"
+                    data-event-id="${event.id}">
+                Delete Event
             </button>
         </article>
     `).join("");
+};
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
 }
 
-displayEvents();
+window.displayEvents();

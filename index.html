@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,16 +9,42 @@
 </head>
 <body>
     <header>
-    <h1>Student Event Management System</h1>
-        <p>Discover and participate in college events</p>
+        <h1>Student Event Management System</h1>
+        <p>Discover, register, and manage college events</p>
     </header>
 
     <main>
-        <h2>Welcome to College Events</h2>
-        <p>Explore upcoming events and register to participate.</p>
-        <div id="events"></div>
+        <section>
+            <h2>Upcoming Events</h2>
+            <div id="events"></div>
+        </section>
+
+        <section class="admin-panel">
+            <h2>Administrator: Manage Events</h2>
+            <form id="event-form">
+                <input id="event-name" type="text"
+                       placeholder="Event name" required>
+
+                <input id="event-date" type="date" required>
+
+                <input id="event-venue" type="text"
+                       placeholder="Event venue" required>
+
+                <textarea id="event-description"
+                          placeholder="Event description"></textarea>
+
+                <button type="submit">Add Event</button>
+            </form>
+            <p id="admin-message" role="status"></p>
+        </section>
     </main>
 
+    <footer>
+        <p>Student Event Management System | College Project</p>
+    </footer>
+
     <script src="script.js"></script>
+    <script src="registration.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
